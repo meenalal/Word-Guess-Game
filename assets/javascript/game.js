@@ -34,10 +34,7 @@ var gameStarted = false;        // Flag to tell if the game has started
 var hasFinished = false;        // Flag for 'press any key to try again'     
 var wins = 0;                   // How many wins has the player racked up
 
-// Game sounds
-var keySound = new Audio('assets/sounds/typewriter-1.wav');
-var winSound = new Audio('./assets/sounds/you-win.wav');
-var loseSound = new Audio('./assets/sounds/you-lose.wav');
+
 
 // Reset our game-level variables
 function resetGame() {
@@ -93,7 +90,7 @@ function updateDisplay() {
 
 // Updates the image depending on how many guesses
 function updateHangmanImage() {
-    document.getElementById("hangmanImage").src = "assets/images/" + (maxTries - remainingGuesses) + ".png";
+    document.getElementById("hangmanImage").src = "assets/images/bgimage.jpg" + (maxTries - remainingGuesses) + ".jpg";
 };
 
 // This function takes a letter and finds all instances of 
@@ -126,7 +123,6 @@ function checkWin() {
         document.getElementById("youwin-image").style.cssText = "display: block";
         document.getElementById("pressKeyTryAgain").style.cssText= "display: block";
         wins++;
-        winSound.play();
         hasFinished = true;
     }
 };
@@ -136,7 +132,6 @@ function checkWin() {
 function checkLoss()
 {
     if(remainingGuesses <= 0) {
-        loseSound.play();
         document.getElementById("gameover-image").style.cssText = "display: block";
         document.getElementById("pressKeyTryAgain").style.cssText = "display:block";
         hasFinished = true;
@@ -168,7 +163,6 @@ document.onkeydown = function(event) {
     } else {
         // Check to make sure a-z was pressed.
         if(event.keyCode >= 65 && event.keyCode <= 90) {
-            keySound.play();
             makeGuess(event.key.toUpperCase());
             updateDisplay();
             checkWin();
