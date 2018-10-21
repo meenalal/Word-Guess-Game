@@ -39,7 +39,6 @@ var wins = 0;                   // How many wins has the player racked up
 // Reset our game-level variables
 function resetGame() {
     remainingGuesses = maxTries;
-    gameStarted = false;
 
     // Use Math.floor to round the random number down to the nearest whole.
     currentWordIndex = Math.floor(Math.random() * (selectableWords.length));
@@ -69,15 +68,14 @@ function resetGame() {
 function updateDisplay() {
 
     document.getElementById("totalWins").innerText = wins;
-    document.getElementById("currentWord").innerText = "";
+    document.getElementById("currentWord").innerText ="";
 
     // Display how much of the word we've already guessed on screen.
     // Printing the array would add commas (,) - so we concatenate a string from each value in the array.
+    var guessingWordText = "";
     for (var i = 0; i < guessingWord.length; i++) {
-        document.getElementById("currentWord").innerText += guessingWord[i];
+    document.getElementById("currentWord").innerText += guessingWord[i];
     }
-
-    //
     document.getElementById("remainingGuesses").innerText = remainingGuesses;
     document.getElementById("guessedLetters").innerText = guessedLetters;
     if(remainingGuesses <= 0) {
@@ -85,12 +83,6 @@ function updateDisplay() {
         document.getElementById("pressKeyTryAgain").style.cssText = "display: block";
         hasFinished = true;
     }
-};
-
-
-// Updates the image depending on how many guesses
-function updateHangmanImage() {
-    document.getElementById("hangmanImage").src = "assets/images/bgimage.jpg" + (maxTries - remainingGuesses) + ".jpg";
 };
 
 // This function takes a letter and finds all instances of 
@@ -109,7 +101,6 @@ function evaluateGuess(letter) {
     // if there are no indicies, remove a guess and update the hangman image
     if (positions.length <= 0) {
         remainingGuesses--;
-        updateHangmanImage();
     } else {
         // Loop through all the indicies and replace the '_' with a letter.
         for(var i = 0; i < positions.length; i++) {
@@ -141,7 +132,7 @@ function checkLoss()
 // Makes a guess
 function makeGuess(letter) {
     if (remainingGuesses > 0) {
-        if(!gameStarted) { 
+        if (!gameStarted) {
             gameStarted = true;
         }
         // Make sure we didn't use this letter yet
@@ -150,6 +141,8 @@ function makeGuess(letter) {
             evaluateGuess(letter);
         }
     }
+    updateDisplay();
+    checkWin();
     
 };
 
@@ -164,9 +157,6 @@ document.onkeydown = function(event) {
         // Check to make sure a-z was pressed.
         if(event.keyCode >= 65 && event.keyCode <= 90) {
             makeGuess(event.key.toUpperCase());
-            updateDisplay();
-            checkWin();
-            checkLoss();
         }
     }
 };
